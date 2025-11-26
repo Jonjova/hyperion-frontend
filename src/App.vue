@@ -48,27 +48,31 @@ export default {
     }
   },
   computed: {
-    menuItems() {
-      return [
-        {
-          label: 'Dashboard',
-          icon: 'pi pi-home',
-          command: () => {
+  menuItems() {
+    return [
+      {
+        label: 'Dashboard',
+        icon: 'pi pi-home',
+        command: () => {
+          if (this.$route.path !== '/') {
             this.$router.push('/')
-            this.sidebarVisible = false
           }
-        },
-        {
-          label: 'Usuarios',
-          icon: 'pi pi-users',
-          command: () => {
-            this.$router.push('/users')
-            this.sidebarVisible = false
-          }
+          this.sidebarVisible = false
         }
-      ]
-    }
-  },
+      },
+      {
+        label: 'Usuarios',
+        icon: 'pi pi-users',
+        command: () => {
+          if (this.$route.path !== '/users') {
+            this.$router.push('/users')
+          }
+          this.sidebarVisible = false
+        }
+      }
+    ]
+  }
+},
   methods: {
     async handleLogout() {
       try {

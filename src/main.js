@@ -25,12 +25,10 @@ import Toolbar from 'primevue/toolbar'
 import Sidebar from 'primevue/sidebar'
 import Menu from 'primevue/menu'
 
-Vue.use(PrimeVue, {
-  ripple: true
-})
+Vue.use(PrimeVue, { ripple: true })
 Vue.use(ToastService)
 
-// Registrar componentes globalmente con nombres multi-palabra
+// Registrar componentes
 Vue.component('PrimeButton', Button)
 Vue.component('PrimeInputText', InputText)
 Vue.component('PrimePassword', Password)
@@ -46,8 +44,12 @@ Vue.component('PrimeMenu', Menu)
 
 Vue.config.productionTip = false
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+// ⚠️ ESTA ES LA PARTE IMPORTANTE
+// Esperar a que Vuex restaure token/usuario ANTES de montar Vue
+store.dispatch('auth/initializeAuth').then(() => {
+  new Vue({
+    router,
+    store,
+    render: h => h(App)
+  }).$mount('#app')
+})

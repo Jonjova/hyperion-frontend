@@ -29,7 +29,7 @@ export default {
     ...mapGetters('auth', ['user']),
     ...mapGetters('users', ['users']),
     usersCount() {
-      return this.users.length
+      return (this.users || []).length
     }
   },
   async mounted() {

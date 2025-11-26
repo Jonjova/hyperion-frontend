@@ -68,11 +68,6 @@ export default {
       loading: false
     }
   },
-  onMounted() {
-    if (this.$store.getters['auth/isAuthenticated']) {
-      this.$router.push('/')
-    }
-  },
   methods: {
     async handleLogin() {
       this.loading = true
