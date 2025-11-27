@@ -3,7 +3,7 @@
     <div class="stats-grid">
       <div class="stat-card" v-for="stat in stats" :key="stat.title">
         <div class="stat-icon" :style="{ backgroundColor: stat.color }">
-          {{ stat.icon }}
+            <i :class="stat.icon" :style="{ fontSize: '1.1rem' }"></i>
         </div>
         <div class="stat-content">
           <h3 class="stat-value">{{ stat.value }}</h3>

@@ -29,7 +29,23 @@
             striped
             hover
           >
+
+           <template #cell-roles="slotProps">
+              <div class="roles-tags">
+                <span 
+                  v-for="role in slotProps.item.roles" 
+                  :key="role.id || role"
+                  class="role-tag"
+                >
+                  {{ role.name || role }}
+                </span>
+                <span v-if="!slotProps.item.roles || slotProps.item.roles.length === 0" class="no-roles">
+                  Sin roles
+                </span>
+              </div>
+            </template>
             <template #cell-actions="slotProps">
+              
               <div class="table-actions">
                 <BaseButton 
                   size="small" 
@@ -76,7 +92,7 @@
 
     <!-- Modal para crear/editar usuario -->
     <BaseModal 
-      v-model="showCreateModal" <!-- CORREGIDO: sin :show -->
+      v-model="showCreateModal"
       :title="isEditing ? 'Editar Usuario' : 'Nuevo Usuario'"
       size="medium"
     >
@@ -228,3 +244,101 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.admin-layout {
+  display: flex;
+  min-height: calc(100vh - 64px);
+}
+
+.main-content {
+  flex: 1;
+  padding: 0;
+  background-color: #f8f9fa;
+}
+
+.content-area {
+  padding: 20px;
+}
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  margin: 0;
+  color: #333;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+/* Roles Tags Minimalistas */
+.roles-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+
+.role-tag {
+  background-color: #f8f9fa;
+  color: #495057;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 400;
+  border: 1px solid #e9ecef;
+}
+
+.no-roles {
+  color: #6c757d;
+  font-style: italic;
+  font-size: 0.8rem;
+}
+
+/* Table Actions Minimalistas */
+.table-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .page-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .page-header h1 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .content-area {
+    padding: 16px;
+  }
+  
+  .table-actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .table-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .table-actions .base-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+</style>

@@ -1,41 +1,37 @@
 <template>
   <aside class="sidebar" :class="{ 'sidebar--collapsed': collapsed }">
+     <!-- Botón de toggle en la parte superior -->
+    <div class="sidebar-header">
+      <button 
+      @click="$emit('toggle')"
+      class="toggle-btn"
+      :title="collapsed ? 'Expandir' : 'Contraer'"
+      >
+      <i class="pi" :class="collapsed ? 'pi-bars' : 'pi-times'"></i>
+      </button>
+    </div>
     <nav class="sidebar-nav">
       <ul class="nav-list">
         <li v-for="item in navigation" :key="item.to" class="nav-item">
           <router-link 
             :to="item.to" 
             class="nav-link"
-            :class="{ 'nav-link--active': $route.path === item.to }"
+            :class="{ 'nav-link--active': $route.path.startsWith(item.to) }"
+            :title="item.text"
           >
-            <i class="nav-icon" v-if="item.icon" :class="item.icon" :style="{ fontSize: '1rem' }"></i>
+            <i class="nav-icon" :class="item.icon"></i>
             <span class="nav-text">{{ item.text }}</span>
           </router-link>
         </li>
       </ul>
     </nav>
     
-    <div class="sidebar-footer">
-      <BaseButton 
-        variant="secondary" 
-        size="small" 
-        @click="$emit('toggle')"
-        class="toggle-btn"
-      >
-        {{ collapsed ? '›' : '‹' }}
-      </BaseButton>
-    </div>
   </aside>
 </template>
 
 <script>
-import BaseButton from '@/components/ui/BaseButton.vue';
-
 export default {
   name: 'AppSidebar',
-  components: {
-    BaseButton
-  },
   props: {
     collapsed: {
       type: Boolean,
@@ -56,24 +52,24 @@ export default {
 
 <style scoped>
 .sidebar {
-  width: 250px;
-  background-color: #f8f9fa;
+  width: 200px;
+  background: white;
   border-right: 1px solid #e0e0e0;
   display: flex;
   flex-direction: column;
-  transition: width 0.3s ease;
+  transition: width 0.2s ease;
   height: 100vh;
   position: sticky;
   top: 0;
 }
 
 .sidebar--collapsed {
-  width: 60px;
+  width: 50px;
 }
 
 .sidebar-nav {
   flex: 1;
-  padding: 16px 0;
+  padding: 8px 0;
 }
 
 .nav-list {
@@ -83,40 +79,47 @@ export default {
 }
 
 .nav-item {
-  margin-bottom: 4px;
+  margin: 2px 8px;
 }
 
 .nav-link {
   display: flex;
   align-items: center;
-  padding: 12px 16px;
+  padding: 10px 12px;
   text-decoration: none;
-  color: #333;
-  transition: all 0.3s ease;
-  border-left: 3px solid transparent;
+  color: #666;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
 }
 
 .nav-link:hover {
-  background-color: #e9ecef;
+  background: #dad6d6;
+  color: #333;
+}
+
+.nav-link--active:hover {
+  background: linear-gradient(to right, #000000da, #434343);
+  color: white;
+  font-weight: 500;
 }
 
 .nav-link--active {
-  background-color: #bdc0c0;
-  border-left-color: #1976d225;
-  color: #090f14;
+  background: linear-gradient(to right, #000000da, #434343);
+  color: white;
   font-weight: 500;
 }
 
 .nav-icon {
   margin-right: 12px;
-  font-size: 1.2rem;
-  min-width: 24px;
+  font-size: 1rem;
+  min-width: 16px;
   text-align: center;
 }
 
 .nav-text {
   white-space: nowrap;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.2s ease;
 }
 
 .sidebar--collapsed .nav-text {
@@ -125,11 +128,23 @@ export default {
 }
 
 .sidebar-footer {
-  padding: 16px;
+  padding: 12px;
   border-top: 1px solid #e0e0e0;
 }
 
 .toggle-btn {
   width: 100%;
+  background: none;
+  border: 1px solid #e0e0e0;
+  padding: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #666;
+  transition: all 0.2s ease;
+}
+
+.toggle-btn:hover {
+  background: #f5f5f5;
+  color: #333;
 }
 </style>

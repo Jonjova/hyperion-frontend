@@ -83,39 +83,39 @@ export default {
 }
 
 .base-button--primary {
-  background-color: #1976d2;
+  background-color: #27272a;
   color: white;
 }
 
 .base-button--primary:hover:not(.base-button--disabled) {
-  background-color: #1565c0;
+  background-color: #313135;
 }
 
 .base-button--secondary {
-  background-color: #6c757d;
-  color: white;
+  background-color: #78787e54;
+  color: rgb(247, 244, 244);
 }
 
 .base-button--secondary:hover:not(.base-button--disabled) {
-  background-color: #5a6268;
+  background-color: #8e8e929d;
 }
 
 .base-button--danger {
-  background-color: #dc3545;
+  background-color: #64171f;
   color: white;
 }
 
 .base-button--danger:hover:not(.base-button--disabled) {
-  background-color: #c82333;
+  background-color: #64171f;
 }
 
 .base-button--success {
-  background-color: #28a745;
+  background-color: #22a853;
   color: white;
 }
 
 .base-button--success:hover:not(.base-button--disabled) {
-  background-color: #218838;
+  background-color: #237e38;
 }
 
 .base-button--disabled {

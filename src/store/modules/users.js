@@ -30,6 +30,7 @@ const mutations = {
 const actions = {
   async fetchUsers({ commit }) {
     const response = await usersApi.getUsers();
+    const roles = response.data.data.map(user => user.roles);
     commit(USER_TYPES.SET_USERS, response.data.data);
     return response;
   },

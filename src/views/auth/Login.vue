@@ -13,7 +13,6 @@
             class="form-input"
             :class="{ 'form-input--error': errors.email }"
             placeholder="usuario@ejemplo.com"
-            required
           />
           <span v-if="errors.email" class="error-message">{{ errors.email }}</span>
         </div>
@@ -27,7 +26,6 @@
             class="form-input"
             :class="{ 'form-input--error': errors.password }"
             placeholder="••••••••"
-            required
           />
           <span v-if="errors.password" class="error-message">{{ errors.password }}</span>
         </div>
@@ -112,7 +110,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #979bad 0%, #a6a6af 100%);
   padding: 20px;
 }
 

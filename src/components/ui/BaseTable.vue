@@ -1,31 +1,37 @@
 <template>
   <div class="base-table">
-    <table :class="tableClasses">
-      <thead>
-        <tr>
-          <th 
-            v-for="column in columns" 
-            :key="column.key"
-            :class="getHeaderClass(column)"
-          >
-            {{ column.label }}
-          </th>
-          <th v-if="$slots.actions">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(item, index) in data" :key="item.id || index">
-          <td v-for="column in columns" :key="column.key">
-            <slot :name="`cell-${column.key}`" :item="item" :value="item[column.key]">
-              {{ item[column.key] }}
-            </slot>
-          </td>
-          <td v-if="$slots.actions" class="actions-cell">
-            <slot name="actions" :item="item" :index="index"></slot>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-container">
+      <table :class="tableClasses">
+        <thead>
+          <tr>
+            <th 
+              v-for="column in columns" 
+              :key="column.key"
+              :class="getHeaderClass(column)"
+            >
+              {{ column.label }}
+            </th>
+            <th v-if="$slots.actions" class="actions-header">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in data" :key="item.id || index">
+            <td 
+              v-for="column in columns" 
+              :key="column.key"
+              :data-label="column.label"
+            >
+              <slot :name="`cell-${column.key}`" :item="item" :value="item[column.key]">
+                {{ item[column.key] }}
+              </slot>
+            </td>
+            <td v-if="$slots.actions" class="actions-cell" data-label="Acciones">
+              <slot name="actions" :item="item" :index="index"></slot>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     
     <div v-if="data.length === 0" class="empty-state">
       <slot name="empty">
@@ -85,34 +91,44 @@ export default {
 <style scoped>
 .base-table {
   width: 100%;
+}
+
+.table-container {
   overflow-x: auto;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-  background-color: white;
+  min-width: 600px; /* Minimum width for desktop */
 }
 
 .table th,
 .table td {
-  padding: 12px;
+  padding: 12px 16px;
   text-align: left;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 0.875rem;
 }
 
 .table th {
-  background-color: #f5f5f5;
-  font-weight: 600;
-  color: #333;
+  background-color: #fafafa;
+  font-weight: 500;
+  color: #666;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.table-striped tbody tr:nth-child(odd) {
-  background-color: #f9f9f9;
+.table-striped tbody tr:nth-child(even) {
+  background-color: #fafafa;
 }
 
 .table-hover tbody tr:hover {
-  background-color: #f5f5f5;
+  background-color: #f8f9fa;
 }
 
 .actions-cell {
@@ -123,12 +139,80 @@ export default {
   padding: 40px;
   text-align: center;
   color: #666;
-  background-color: #f9f9f9;
-  border-radius: 4px;
+  background-color: #fafafa;
+  border-radius: 8px;
   margin-top: 16px;
 }
 
 .text-left { text-align: left; }
 .text-center { text-align: center; }
 .text-right { text-align: right; }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .table-container {
+    min-width: unset;
+    border: 1px solid #f0f0f0;
+  }
+  
+  .table {
+    min-width: unset;
+    width: 100%;
+  }
+  
+  .table thead {
+    display: none;
+  }
+  
+  .table tbody tr {
+    display: block;
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .table tbody tr:last-child {
+    border-bottom: none;
+  }
+  
+  .table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border: none;
+    text-align: right;
+  }
+  
+  .table td::before {
+    content: attr(data-label);
+    font-weight: 500;
+    color: #666;
+    text-align: left;
+    margin-right: 16px;
+    flex-shrink: 0;
+  }
+  
+  .actions-cell {
+    justify-content: flex-end;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  
+  .actions-cell::before {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .table td {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .table td::before {
+    margin-right: 0;
+    font-size: 0.8rem;
+  }
+}
 </style>

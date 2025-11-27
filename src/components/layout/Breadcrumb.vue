@@ -1,6 +1,6 @@
 <template>
-  <nav class="breadcrumb">
-    <ol class="breadcrumb-list">
+  <nav class="breadcrumb" >
+    <ol class="breadcrumb-list" :style="{ paddingLeft: '24px' }">
       <li 
         v-for="(item, index) in items" 
         :key="index"
