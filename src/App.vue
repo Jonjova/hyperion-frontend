@@ -1,104 +1,51 @@
 <template>
   <div id="app">
-    <PrimeToast />
-    
-    <div v-if="$store.getters['auth/isAuthenticated']">
-      <PrimeToolbar class="p-mb-4">
-        <template #left>
-          <span class="p-text-bold">Mi App Vue 2</span>
-        </template>
-        <template #right>
-          <PrimeButton
-            label="Cerrar Sesión"
-            icon="pi pi-sign-out"
-            class="p-button-danger"
-            @click="handleLogout"
-          />
-        </template>
-      </PrimeToolbar>
-      
-      <div class="p-d-flex">
-        <PrimeSidebar :visible.sync="sidebarVisible" :baseZIndex="1000">
-          <PrimeMenu :model="menuItems" />
-        </PrimeSidebar>
-        
-        <PrimeButton
-          icon="pi pi-bars"
-          @click="sidebarVisible = true"
-          class="p-m-2"
-          v-if="!sidebarVisible"
-        />
-        
-        <div class="p-ml-2 p-mr-2" style="width: 100%">
-          <router-view />
-        </div>
-      </div>
-    </div>
-    
-    <router-view v-else />
+    <router-view />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'AppMain',
-  data() {
-    return {
-      sidebarVisible: true
-    }
-  },
-  computed: {
-  menuItems() {
-    return [
-      {
-        label: 'Dashboard',
-        icon: 'pi pi-home',
-        command: () => {
-          if (this.$route.path !== '/') {
-            this.$router.push('/')
-          }
-          this.sidebarVisible = false
-        }
-      },
-      {
-        label: 'Usuarios',
-        icon: 'pi pi-users',
-        command: () => {
-          if (this.$route.path !== '/users') {
-            this.$router.push('/users')
-          }
-          this.sidebarVisible = false
-        }
-      }
-    ]
-  }
-},
-  methods: {
-    async handleLogout() {
-      try {
-        await this.$store.dispatch('auth/logout')
-        this.$router.push('/login')
-        this.$toast.add({
-          severity: 'success',
-          summary: 'Éxito',
-          detail: 'Sesión cerrada correctamente',
-          life: 3000
-        })
-      } catch (error) {
-        console.error('Error al cerrar sesión:', error)
-      }
-    }
-  }
-}
+  name: 'App'
+};
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f5f5f5;
 }
+
+#app {
+  min-height: 100vh;
+}
+
+/* Utilidades globales */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mt-4 { margin-top: 2rem; }
+
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+.mb-4 { margin-bottom: 2rem; }
+
+.p-1 { padding: 0.5rem; }
+.p-2 { padding: 1rem; }
+.p-3 { padding: 1.5rem; }
+.p-4 { padding: 2rem; }
 </style>

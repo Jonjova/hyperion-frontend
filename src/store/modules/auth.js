@@ -1,78 +1,72 @@
-import axios from '@/config/axios'
+import { AUTH_TYPES } from '../types';
+import { authApi } from '@/api/auth';
 
 const state = {
+  user: null,
   token: localStorage.getItem('token') || null,
-  user: JSON.parse(localStorage.getItem('user')) || null,
-  loading: false
-}
+  isAuthenticated: !!localStorage.getItem('token')
+};
 
 const mutations = {
-  SET_TOKEN(state, token) {
-    state.token = token
-    localStorage.setItem('token', token)
+  [AUTH_TYPES.SET_USER](state, user) {
+    state.user = user;
   },
-  SET_USER(state, user) {
-    state.user = user
-    localStorage.setItem('user', JSON.stringify(user))
+  [AUTH_TYPES.SET_TOKEN](state, token) {
+    state.token = token;
+    state.isAuthenticated = !!token;
+    if (token) {
+      localStorage.setItem('token', token);
+    } else {
+      localStorage.removeItem('token');
+    }
   },
-  SET_LOADING(state, loading) {
-    state.loading = loading
-  },
-  LOGOUT(state) {
-    state.token = null
-    state.user = null
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
+  [AUTH_TYPES.LOGOUT](state) {
+    state.user = null;
+    state.token = null;
+    state.isAuthenticated = false;
+    localStorage.removeItem('token');
   }
-}
+};
 
 const actions = {
-  async login({ commit }, credentials) {
-    commit('SET_LOADING', true)
+  async login({ commit, dispatch }, credentials) {
     try {
-      const response = await axios.post('/login', credentials)
+      const response = await authApi.login(credentials);
+      const { token, user } = response.data;
       
-      const { token, user } = response.data
+      commit(AUTH_TYPES.SET_TOKEN, token);
+      commit(AUTH_TYPES.SET_USER, user);
       
-      commit('SET_TOKEN', token)
-      commit('SET_USER', user)
+      // Cargar permisos mock automáticamente
+      await dispatch('permissions/loadUserPermissions', null, { root: true });
       
-      // Configurar el token en axios para futuras peticiones
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-      
-      return response.data
+      return response;
     } catch (error) {
-      throw error.response?.data || error
-    } finally {
-      commit('SET_LOADING', false)
+      commit(AUTH_TYPES.LOGOUT);
+      throw error;
     }
   },
-
-  async logout({ commit }) {
+  
+  async checkAuth({ commit, state, dispatch }) {
+    if (!state.token) return false;
+    
     try {
-      await axios.post('/logout')
+      // Cargar permisos mock si está autenticado
+      await dispatch('permissions/loadUserPermissions', null, { root: true });
+      return true;
     } catch (error) {
-      console.error('Error al cerrar sesión:', error)
-    } finally {
-      commit('LOGOUT')
-      delete axios.defaults.headers.common['Authorization']
-    }
-  },
-
-  initializeAuth({ commit }) {
-    const token = localStorage.getItem('token')
-    if (token) {
-      commit('SET_TOKEN', token)
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+      console.warn('Error checking auth:', error);
+      return true; // Permitir acceso durante desarrollo
     }
   }
-}
+};
 
 const getters = {
-  isAuthenticated: state => !!state.token,
-  user: state => state.user,
-  isLoading: state => state.loading
-}
+  user: (state) => state.user,
+  isAuthenticated: (state) => state.isAuthenticated,
+  userId: (state) => state.user?.id,
+  userRoles: (state) => state.user?.roles || []
+};
 
 export default {
   namespaced: true,
@@ -80,4 +74,4 @@ export default {
   mutations,
   actions,
   getters
-}
+};
