@@ -1,4 +1,4 @@
-import { PERMISSION_TYPES } from '../types';
+import { PERMISSION_TYPES } from '../../store/types';
 import { usersApi } from '@/api/users';
 
 const state = {
@@ -152,7 +152,10 @@ function matchesABACRule(rule, userAttributes, action, resource) {
 
 export default {
   namespaced: true,
-  state,
+  state: {
+    permissions: [],
+    roles: []
+  },
   mutations,
   actions,
   getters

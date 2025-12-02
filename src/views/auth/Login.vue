@@ -92,13 +92,89 @@ export default {
       this.error = '';
       
       try {
-        await this.$store.dispatch('auth/login', this.form);
+        // Hacer login - el store ya guarda en localStorage
+        const response = await this.$store.dispatch('auth/login', this.form);
+        
+        // Obtener el usuario de la respuesta
+        const user = response.data.user;
+        
+        // Debug: verificar que el usuario se guardó
+        console.log('Usuario obtenido del login:', user);
+        console.log('Token guardado en localStorage:', localStorage.getItem('token'));
+        console.log('Usuario guardado en localStorage:', localStorage.getItem('user'));
+        
+        // Redirigir al dashboard
         this.$router.push('/dashboard');
       } catch (error) {
-        this.error = error.response?.data?.error || 'Error al iniciar sesión';
+        console.error('Error de inicio de sesión:', error);
+        
+        // Manejar diferentes tipos de errores
+        if (error.response) {
+          // El servidor respondió con un error
+          if (error.response.status === 401) {
+            this.error = 'Credenciales incorrectas';
+          } else if (error.response.status === 422) {
+            this.error = 'Datos de formulario inválidos';
+          } else if (error.response.status === 500) {
+            this.error = 'Error del servidor. Intente más tarde.';
+          } else {
+            this.error = error.response.data?.error || 
+                       error.response.data?.message || 
+                       'Error al iniciar sesión';
+          }
+        } else if (error.request) {
+          // La petición fue hecha pero no hubo respuesta
+          this.error = 'No se pudo conectar con el servidor. Verifique su conexión.';
+          console.warn('Backend no disponible. Usando datos mock...');
+          
+          // Opcional: Usar datos mock para desarrollo
+          await this.mockLogin();
+        } else {
+          // Error al configurar la petición
+          this.error = 'Error de configuración: ' + error.message;
+        }
       } finally {
         this.loading = false;
       }
+    },
+    
+    // Método mock para desarrollo sin backend
+    async mockLogin() {
+      try {
+        const mockUser = {
+          id: 1,
+          name: 'Usuario Demo',
+          email: this.form.email || 'demo@example.com',
+          roles: ['admin']
+        };
+        
+        const mockToken = 'mock-jwt-token-' + Date.now();
+        
+        // Guardar en localStorage
+        localStorage.setItem('token', mockToken);
+        localStorage.setItem('user', JSON.stringify(mockUser));
+        
+        // Actualizar store
+        this.$store.commit('auth/SET_TOKEN', mockToken);
+        this.$store.commit('auth/SET_USER', mockUser);
+        
+        console.log('Login mock exitoso:', mockUser);
+        
+        // Cargar permisos mock
+        await this.$store.dispatch('permissions/loadUserPermissions', mockUser.id, { root: true });
+        
+        // Redirigir
+        this.$router.push('/dashboard');
+      } catch (mockError) {
+        console.error('Error en mock login:', mockError);
+        this.error = 'Error en modo desarrollo. Intente con credenciales demo.';
+      }
+    }
+  },
+  created() {
+    // Verificar si ya está autenticado
+    if (this.$store.getters['auth/isAuthenticated']) {
+      this.$router.push('/dashboard');
     }
   }
 };

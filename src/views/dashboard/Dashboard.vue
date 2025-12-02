@@ -4,8 +4,8 @@
     
     <div class="dashboard-layout">
       <Sidebar 
-        :collapsed="sidebarCollapsed" 
-        @toggle="sidebarCollapsed = !sidebarCollapsed" 
+        :collapsed="isSidebarCollapsed" 
+        @toggle="expanded" 
       />
       
       <main class="main-content">
@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 import AppHeader from '@/components/layout/AppHeader.vue';
 import Sidebar from '@/components/layout/Sidebar.vue';
 import Breadcrumb from '@/components/layout/Breadcrumb.vue';
@@ -68,7 +69,7 @@ export default {
   },
   data() {
     return {
-      sidebarCollapsed: false,
+    //sidebarCollapsed: false,
       stats: [
         { title: 'Total Usuarios', value: '150', icon: 'pi pi-users', color: '#1976d2' },
         { title: 'Total Categorías', value: '45', icon: 'pi pi-folder', color: '#388e3c' },
@@ -88,6 +89,8 @@ export default {
     };
   },
   computed: {
+    ...mapGetters('users', ['users']),
+    ...mapGetters('sidebar', ['isSidebarCollapsed']),
     breadcrumbItems() {
       return [
         { text: 'Dashboard', to: '/dashboard' }
@@ -95,6 +98,11 @@ export default {
     }
   },
   methods: {
+     ...mapActions('users', ['fetchUsers', 'deleteUser']),
+    ...mapActions('sidebar', ['toggleSidebar']),
+    expanded() {
+      this.toggleSidebar();
+    },
     handleAction(action) {
       this.$router.push(action.route).catch(err => {
         // Ignorar error de navegación redundante

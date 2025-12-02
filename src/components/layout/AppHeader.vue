@@ -1,3 +1,4 @@
+<!-- src/components/layout/AppHeader.vue -->
 <template>
   <header class="app-header">
     <div class="header-content">
@@ -14,7 +15,10 @@
       <div class="header-right">
         <slot name="right">
           <div class="user-menu" v-if="$auth.isAuthenticated">
-            <span class="user-name">Hola, {{ $auth.user?.name }}</span>
+            <!-- Usar getter directo del store para mejor reactividad -->
+            <span class="user-name">
+              Hola, {{ userName }}
+            </span>
             <BaseButton variant="secondary" size="small" @click="logout">
               Cerrar Sesión
             </BaseButton>
@@ -27,6 +31,7 @@
 
 <script>
 import BaseButton from '@/components/ui/BaseButton.vue';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'AppHeader',
@@ -39,13 +44,23 @@ export default {
       default: 'Mi Aplicación'
     }
   },
+  computed: {
+    // Obtener usuario directamente del store
+    ...mapGetters('auth', ['userName', 'isAuthenticated'])
+  },
   methods: {
     async logout() {
       try {
-        await this.$store.dispatch('auth/logout');
+        // Usar el método del plugin o del store
+        await this.$auth.logout();
+        // O alternativamente: await this.$store.dispatch('auth/logout');
+        
+        // Redirigir al login
         this.$router.push('/login');
       } catch (error) {
-        console.error('Error during logout:', error);
+        console.error('Error durante logout:', error);
+        // Forzar redirección incluso si hay error
+        this.$router.push('/login');
       }
     }
   }

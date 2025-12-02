@@ -1,12 +1,36 @@
+<!-- src/App.vue -->
 <template>
   <div id="app">
-    <router-view />
+    <AppLoader v-if="isInitializing" />
+    <div v-else>
+      <router-view />
+    </div>
   </div>
 </template>
 
 <script>
+import AppLoader from '@/components/ui/AppLoader.vue';
+
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    AppLoader
+  },
+  data() {
+    return {
+      isInitializing: true
+    };
+  },
+  async created() {
+    // Inicializar autenticación
+    try {
+      await this.$store.dispatch('auth/initialize');
+    } catch (error) {
+      console.error('Error inicializando:', error);
+    } finally {
+      this.isInitializing = false;
+    }
+  }
 };
 </script>
 

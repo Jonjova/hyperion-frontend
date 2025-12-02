@@ -1,9 +1,10 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import auth from './modules/auth';
-import users from './modules/users';
-import permissions from './modules/permissions';
-import attributes from './modules/attributes';
+import auth from '../modules/auth/auth';
+import users from '../modules/users/users';
+import permissions from '../modules/auth/permissions';  // Cambiado
+import attributes from '../modules/auth/attributes';    // Cambiado
+import sidebar from '../modules/home/sidebar';          // Cambiado
 
 Vue.use(Vuex);
 
@@ -12,7 +13,8 @@ export default new Vuex.Store({
     auth,
     users,
     permissions,
-    attributes
+    attributes,
+    sidebar
   },
   strict: process.env.NODE_ENV !== 'production'
 });

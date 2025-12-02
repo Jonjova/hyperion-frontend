@@ -1,11 +1,24 @@
-import api from './index';
+// src/api/auth.js
+import axios from './index';
 
 export const authApi = {
   login(credentials) {
-    return api.post('/login', credentials);
+    return axios.post('/login', credentials);
   },
   
   logout() {
-    return api.post('/logout');
+    return axios.post('/auth/logout');
+  },
+  
+  getProfile() {
+    return axios.get('/auth/profile');
+  },
+  
+  verifyToken(token) {
+    return axios.post('/auth/verify', { token });
+  },
+  
+  refreshToken(refreshToken) {
+    return axios.post('/auth/refresh', { refreshToken });
   }
 };

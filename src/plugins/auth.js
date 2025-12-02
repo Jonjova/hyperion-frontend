@@ -1,8 +1,10 @@
+// src/plugins/auth.js
 import store from '@/store';
 
 export default {
   install(Vue) {
-    Vue.prototype.$auth = {
+    // Métodos de permisos
+    const authMethods = {
       // RBAC
       hasRole(role) {
         return store.getters['permissions/hasRole'](role);
@@ -17,7 +19,7 @@ export default {
         return store.getters['permissions/can'](action, resource, context);
       },
       
-      // Híbrido
+      // Método unificado - ESTE ES $can
       can(permission, resource, context = {}) {
         if (typeof permission === 'string') {
           return this.hasPermission(permission);
@@ -27,12 +29,42 @@ export default {
       
       // Estado de autenticación
       get user() {
-        return store.state.auth.user;
+        return store.getters['auth/user'];
       },
       
       get isAuthenticated() {
-        return store.state.auth.isAuthenticated;
+        return store.getters['auth/isAuthenticated'];
+      },
+      
+      // Métodos adicionales
+      get userId() {
+        return store.getters['auth/userId'];
+      },
+      
+      get userRoles() {
+        return store.getters['auth/userRoles'];
+      },
+      
+      async logout() {
+        await store.dispatch('auth/logout');
+      },
+      
+      async initialize() {
+        return await store.dispatch('auth/initialize');
       }
     };
+    
+    // Agregar todos los métodos a Vue.prototype
+    Vue.prototype.$auth = authMethods;
+    
+    // También agregar $can como atajo directo
+    Vue.prototype.$can = function(permission, resource, context) {
+      return authMethods.can(permission, resource, context);
+    };
+    
+    // O si prefieres, agrega todos los métodos individualmente
+    Vue.prototype.$hasRole = authMethods.hasRole;
+    Vue.prototype.$hasPermission = authMethods.hasPermission;
+    Vue.prototype.$checkPolicy = authMethods.checkPolicy;
   }
 };

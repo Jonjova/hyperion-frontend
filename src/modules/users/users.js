@@ -1,4 +1,4 @@
-import { USER_TYPES } from '../types';
+import { USER_TYPES } from '../../store/types';
 import { usersApi } from '@/api/users';
 
 const state = {

@@ -4,8 +4,8 @@
     
     <div class="admin-layout">
       <AppSidebar 
-        :collapsed="sidebarCollapsed" 
-        @toggle="sidebarCollapsed = !sidebarCollapsed" 
+        :collapsed="isSidebarCollapsed" 
+        @toggle="expanded" 
       />
       
       <main class="main-content">
@@ -13,7 +13,7 @@
         
         <div class="content-area">
           <div class="page-header">
-            <h1>Usuarios</h1>
+            <h1>Usuarios {{ isSidebarCollapsed ? 'Colapsado' : 'Expandido' }}</h1>
             <BaseButton 
               v-if="$can('user.create')"
               variant="primary" 
@@ -128,7 +128,6 @@ export default {
   },
   data() {
     return {
-      sidebarCollapsed: false,
       showCreateModal: false,
       isEditing: false,
       currentUser: null,
@@ -142,6 +141,7 @@ export default {
   },
   computed: {
     ...mapGetters('users', ['users']),
+    ...mapGetters('sidebar', ['isSidebarCollapsed']),
     breadcrumbItems() {
       return [
         { text: 'Dashboard', to: '/dashboard' },
@@ -154,7 +154,10 @@ export default {
   },
   methods: {
     ...mapActions('users', ['fetchUsers', 'deleteUser']),
-    
+    ...mapActions('sidebar', ['toggleSidebar']),
+    expanded() {
+      this.toggleSidebar();
+    },
     async loadUsers() {
       try {
         await this.fetchUsers();

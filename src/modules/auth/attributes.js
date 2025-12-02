@@ -1,4 +1,4 @@
-import { ATTRIBUTE_TYPES } from '../types';
+import { ATTRIBUTE_TYPES } from '../../store/types';
 
 const state = {
   attributes: {},
