@@ -47,6 +47,7 @@ export default {
 <style scoped>
 .breadcrumb {
   padding: 16px 0;
+  padding-left: 58px;
 }
 
 .breadcrumb-list {

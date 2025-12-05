@@ -5,11 +5,24 @@ import { permissionGuard } from '@/middleware/permissions';
 
 Vue.use(VueRouter);
 
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => {
+    if (err.name !== 'NavigationDuplicated') throw err;
+  });
+};
+
+const originalReplace = VueRouter.prototype.replace;
+VueRouter.prototype.replace = function replace(location) {
+  return originalReplace.call(this, location).catch(err => {
+    if (err.name !== 'NavigationDuplicated') throw err;
+  });
+};
 const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/views/auth/Login.vue'),
+    component: () => import('@/modules/auth/views/Login.vue'),
     meta: { requiresAuth: false }
   },
   {
@@ -18,7 +31,10 @@ const routes = [
     component: () => import('@/views/dashboard/Dashboard.vue'),
     meta: { 
       requiresAuth: true,
-      permission: 'dashboard.access'
+      permission: 'dashboard.access',
+       breadcrumb: [
+            { text: 'Dashboard', to: '/dashboard' }
+        ]
     }
   },
   {
@@ -27,7 +43,11 @@ const routes = [
     component: () => import('@/views/admin/Users.vue'),
     meta: { 
       requiresAuth: true,
-      permission: 'user.read'
+      permission: 'user.read',
+      breadcrumb: [
+            { text: 'Dashboard', to: '/dashboard' },
+            { text: 'Usuarios', to: '/admin/users' }
+        ]
     }
   },
   {

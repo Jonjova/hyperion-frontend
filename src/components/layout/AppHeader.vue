@@ -41,7 +41,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: 'Mi Aplicación'
+      default: 'Hyperion'
     }
   },
   computed: {
@@ -106,5 +106,6 @@ export default {
 
 .user-name {
   font-weight: 500;
+  margin-left: 8px;
 }
 </style>
