@@ -100,17 +100,6 @@
         computed: {
             ...mapGetters('users', ['users']),
             ...mapGetters('sidebar', ['isSidebarCollapsed']),
-            breadcrumbItems() {
-                return [{
-                        text: 'Dashboard',
-                        to: '/dashboard'
-                    },
-                    {
-                        text: 'Usuarios',
-                        to: '/admin/users'
-                    }
-                ];
-            },
         },
         async mounted() {
             await this.loadUsers();

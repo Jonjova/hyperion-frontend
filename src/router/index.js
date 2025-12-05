@@ -3,6 +3,8 @@ import VueRouter from 'vue-router';
 import { authGuard } from '@/middleware/auth';
 import { permissionGuard } from '@/middleware/permissions';
 
+import adminRoutes from '@/modules/admin/routes';
+
 Vue.use(VueRouter);
 
 const originalPush = VueRouter.prototype.push;
@@ -37,28 +39,7 @@ const routes = [
         ]
     }
   },
-  {
-    path: '/admin/users',
-    name: 'Users',
-    component: () => import('@/views/admin/Users.vue'),
-    meta: { 
-      requiresAuth: true,
-      permission: 'user.read',
-      breadcrumb: [
-            { text: 'Dashboard', to: '/dashboard' },
-            { text: 'Usuarios', to: '/admin/users' }
-        ]
-    }
-  },
-  {
-    path: '/admin/roles',
-    name: 'Roles',
-    component: () => import('@/views/admin/Roles.vue'),
-    meta: { 
-      requiresAuth: true,
-      permission: 'role.manage'
-    }
-  },
+  ...adminRoutes,
   {
     path: '/',
     redirect: '/dashboard'
