@@ -1,21 +1,22 @@
 <template>
-    <div class="admin">
+    <div class="admin" :class="{
+        'sidebar-collapsed': isSidebarCollapsed,
+        'sidebar-expanded': !isSidebarCollapsed
+    }">
         <AppHeader :title="title" />
-        <div class="admin-layout">
 
+        <div class="admin-layout">
             <div class="layout-container">
                 <AppSidebar :collapsed="isSidebarCollapsed" @toggle="expanded" />
 
                 <main class="main-content">
                     <AppBreadcrumb v-if="showBreadcrumb" :items="breadcrumbItems" />
-
                     <div class="content-area">
-                    <router-view />
+                        <router-view />
                     </div>
                 </main>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -72,6 +73,7 @@ export default {
         flex: 1;
         padding: 0;
         background-color: inherit;
+        transition: margin-left 0.25s ease;
     }
 
     .content-area {
@@ -90,7 +92,49 @@ export default {
 
     @media (max-width: 767px) {
         .content-area {
-            padding: 76px;
+            padding-left: 76px;
         }
     }
+
+    /* ===== Ajuste dinámico del contenido según sidebar ===== */
+    .sidebar-expanded .main-content {
+        margin-left: 150px;
+        transition: margin-left 0.25s ease;
+    }
+
+/* ===== SOLO EN MÓVIL ===== */
+@media (max-width: 767px) {
+
+    /* El contenido queda fijo y hace scroll interno */
+    .main-content {
+        position: fixed;
+        top: 64px;              /* altura del header */
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 64px);
+        overflow-y: auto;
+        background-color: inherit;
+        z-index: 1;
+    }
+
+    /* El layout bajo header */
+    .layout-container {
+        position: relative;
+        height: calc(100vh - 64px);
+        overflow: hidden;
+    }
+
+    /* El sidebar NO debe empujar el contenido en móvil */
+    .sidebar-expanded .main-content,
+    .sidebar-collapsed .main-content {
+        margin-left: 0 !important;
+    }
+
+    /* Ajuste de padding del contenido */
+    .content-area {
+        /* padding: 20px; */
+        padding-top: 10px;
+    }
+}
+
 </style>

@@ -65,7 +65,8 @@ export default {
       },
       errors: {},
       loading: false,
-      error: ''
+      error: '',
+      isRedirecting: false // ← Controlar redirecciones
     };
   },
   methods: {
@@ -86,31 +87,25 @@ export default {
     },
     
     async handleLogin() {
+      if (this.isRedirecting) return;
+      
       if (!this.validateForm()) return;
       
       this.loading = true;
       this.error = '';
+      this.isRedirecting = true;
       
       try {
-        // Hacer login - el store ya guarda en localStorage
+        // Hacer login
         const response = await this.$store.dispatch('auth/login', this.form);
         
-        // Obtener el usuario de la respuesta
-        const user = response.data.user;
+        // Redirigir usando replace (no push)
+        await this.$router.replace('/dashboard');
         
-        // Debug: verificar que el usuario se guardó
-        console.log('Usuario obtenido del login:', user);
-        console.log('Token guardado en localStorage:', localStorage.getItem('token'));
-        console.log('Usuario guardado en localStorage:', localStorage.getItem('user'));
-        
-        // Redirigir al dashboard
-        this.$router.push('/dashboard');
       } catch (error) {
         console.error('Error de inicio de sesión:', error);
         
-        // Manejar diferentes tipos de errores
         if (error.response) {
-          // El servidor respondió con un error
           if (error.response.status === 401) {
             this.error = 'Credenciales incorrectas';
           } else if (error.response.status === 422) {
@@ -123,60 +118,57 @@ export default {
                        'Error al iniciar sesión';
           }
         } else if (error.request) {
-          // La petición fue hecha pero no hubo respuesta
-          this.error = 'No se pudo conectar con el servidor. Verifique su conexión.';
-          console.warn('Backend no disponible. Usando datos mock...');
+          this.error = 'No se pudo conectar con el servidor.';
           
-          // Opcional: Usar datos mock para desarrollo
-          await this.mockLogin();
+          // Usar login mock de manera controlada
+          await this.useMockAuth();
+          
         } else {
-          // Error al configurar la petición
           this.error = 'Error de configuración: ' + error.message;
         }
       } finally {
         this.loading = false;
+        this.isRedirecting = false;
       }
     },
     
-    // Método mock para desarrollo sin backend
-    async mockLogin() {
+    async useMockAuth() {
       try {
-        const mockUser = {
-          id: 1,
-          name: 'Usuario Demo',
+        const mockCredentials = {
           email: this.form.email || 'demo@example.com',
-          roles: ['admin']
+          password: this.form.password || 'demo123'
         };
         
-        const mockToken = 'mock-jwt-token-' + Date.now();
+        // Simular la misma estructura que el login real
+        const mockResponse = {
+          data: {
+            token: 'mock-jwt-token-' + Date.now(),
+            user: {
+              id: 1,
+              name: 'Usuario Demo',
+              email: mockCredentials.email,
+              roles: ['admin']
+            }
+          }
+        };
         
-        // Guardar en localStorage
-        localStorage.setItem('token', mockToken);
-        localStorage.setItem('user', JSON.stringify(mockUser));
-        
-        // Actualizar store
-        this.$store.commit('auth/SET_TOKEN', mockToken);
-        this.$store.commit('auth/SET_USER', mockUser);
-        
-        console.log('Login mock exitoso:', mockUser);
-        
-        // Cargar permisos mock
-        await this.$store.dispatch('permissions/loadUserPermissions', mockUser.id, { root: true });
+        // Usar la misma lógica del store
+        await this.$store.dispatch('auth/login', {
+          email: mockCredentials.email,
+          password: mockCredentials.password
+        });
         
         // Redirigir
-        this.$router.push('/dashboard');
-      } catch (mockError) {
-        console.error('Error en mock login:', mockError);
-        this.error = 'Error en modo desarrollo. Intente con credenciales demo.';
+        await this.$router.replace('/dashboard');
+        
+      } catch (error) {
+        console.error('Error en mock auth:', error);
+        this.error = 'No se pudo iniciar sesión en modo desarrollo.';
+        this.isRedirecting = false;
       }
     }
   },
-  created() {
-    // Verificar si ya está autenticado
-    if (this.$store.getters['auth/isAuthenticated']) {
-      this.$router.push('/dashboard');
-    }
-  }
+
 };
 </script>
 
@@ -186,8 +178,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #979bad 0%, #a6a6af 100%);
-  padding: 20px;
+  background: linear-gradient(to right, #050505da, #4d4c4c);
 }
 
 .login-card {
@@ -226,15 +217,15 @@ export default {
 
 .form-input {
   padding: 12px;
-  border: 2px solid #e0e0e0;
-  border-radius: 6px;
-  font-size: 1rem;
-  transition: border-color 0.3s ease;
+  border: none;
+  border-bottom: 2px solid #e0e0e0;
+  border-radius: 0;
+  background: transparent;
 }
 
 .form-input:focus {
   outline: none;
-  border-color: #1976d2;
+  border-color: #0e0f0f;
 }
 
 .form-input--error {

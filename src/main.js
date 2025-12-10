@@ -13,6 +13,7 @@ import PrimeVue from 'primevue/config';
 import 'primevue/resources/themes/saga-blue/theme.css'; // Tema
 import 'primevue/resources/primevue.min.css'; // Estilos base
 import 'primeicons/primeicons.css'; // Iconos
+import './assets/css/global.css';
 
 // Importar configuraciones
 import './config/axios';
@@ -24,7 +25,9 @@ Vue.use(Notifications);
 Vue.use(AuthPlugin);
 
 // PrimeVue
-Vue.use(PrimeVue);
+Vue.use(PrimeVue, { 
+    ripple: true  // Activar efecto ripple para mejor UX
+});
 
 Vue.config.productionTip = false;
 
