@@ -37,10 +37,7 @@
   </aside>
 </template>
 
-
 <script>
-import { ref, onMounted, onUnmounted } from 'vue';
-
 export default {
   name: 'AppSidebar',
   props: {
@@ -59,33 +56,53 @@ export default {
   },
   emits: ['toggle'],
   
-  setup() {
-    const isMobile = ref(false);
-    
-    const checkMobile = () => {
-      isMobile.value = window.innerWidth <= 768;
-    };
-    
-    onMounted(() => {
-      checkMobile();
-      window.addEventListener('resize', checkMobile);
-    });
-    
-    onUnmounted(() => {
-      window.removeEventListener('resize', checkMobile);
-    });
-
-    watch(() => props.collapsed, (value) => {
-      if (!value) {
-        document.body.classList.add("sidebar-open");
-      } else {
-        document.body.classList.remove("sidebar-open");
-      }
-    });
-
+  data() {
     return {
-      isMobile
+      isMobile: false
     };
+  },
+  
+  mounted() {
+    this.checkMobile();
+    window.addEventListener('resize', this.checkMobile);
+    
+    // Set initial state
+    if (!this.collapsed && this.isMobile) {
+      document.body.classList.add('sidebar-open');
+    }
+  },
+  
+  beforeDestroy() {
+    window.removeEventListener('resize', this.checkMobile);
+    document.body.classList.remove('sidebar-open');
+  },
+  
+  watch: {
+    collapsed: {
+      immediate: true,
+      handler(newVal) {
+        if (this.isMobile) {
+          if (!newVal) {
+            document.body.classList.add('sidebar-open');
+          } else {
+            document.body.classList.remove('sidebar-open');
+          }
+        }
+      }
+    },
+    
+    isMobile(newVal) {
+      // If changing from mobile to desktop and sidebar is open, close it
+      if (!newVal && !this.collapsed) {
+        this.$emit('toggle');
+      }
+    }
+  },
+  
+  methods: {
+    checkMobile() {
+      // this.isMobile = window.innerWidth <= 768;
+    }
   }
 };
 </script>
@@ -97,7 +114,7 @@ export default {
 .sidebar {
   width: 200px;
   background: white;
-  border-right: 1px solid #e0e0e0;
+  border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
   transition: width 0.2s ease;
@@ -120,6 +137,7 @@ export default {
 .sidebar-nav {
   flex: 1;
   padding: 8px 0;
+  background: var(--surface-color);
 }
 
 .nav-list {
@@ -140,7 +158,7 @@ export default {
   align-items: center;
   padding: 10px 12px;
   text-decoration: none;
-  color: #666;
+  color: var(--text-color);
   border-radius: 6px;
   transition: all 0.2s ease;
   font-size: 0.9rem;
@@ -149,13 +167,13 @@ export default {
 }
 
 .nav-link:hover {
-  background: #000;
-  color: white;
+  background: var(--primary-color);
+  color: var(--text-color);
 }
 
 .nav-link--active {
-  background-color: #000;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--text-color);
   font-weight: 500;
   padding: 10px 12px;
   min-height: 40px;
@@ -196,18 +214,18 @@ export default {
 =========================== */
 .toggle-btn {
   width: 100%;
-  background: none;
-  border: 1px solid #e0e0e0;
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
   padding: 6px;
-  border-radius: 4px;
+  /* border-radius: 4px; */
   cursor: pointer;
-  color: #666;
+  color: var(--text-color);
   transition: all 0.2s ease;
 }
 
 .toggle-btn:hover {
-  background: #f5f5f5;
-  color: #333;
+  background: var(--surface-color);
+  color: var(--primary-color);
 }
 
 /* ===========================
@@ -220,10 +238,11 @@ export default {
     position: fixed !important;
     top: 65px !important;        /* <-- debajo del header */
     left: 0;
-    width: 6px !important;
-    height: calc(100vh - 60px) !important;
+    width: 60px !important;
+    height: calc(100vh - 65px) !important;
     background: white;
     z-index: 2000;
+    transition: width 0.25s ease;
   }
 
   /* Cuando está colapsado en móvil */
@@ -241,9 +260,9 @@ export default {
     content: "";
     position: fixed;
     left: 0;
-    top: 0;
+    top: 65px;
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 65px);
     background: rgba(0,0,0,0.45);
     z-index: 1500;
     transition: opacity 0.25s ease;
@@ -284,5 +303,4 @@ export default {
     justify-content: center;
   }
 }
-
 </style>

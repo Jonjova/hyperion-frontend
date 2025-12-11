@@ -1,21 +1,22 @@
 /* src/assets/css/global.css */
 
-/* Variables para modo claro (por defecto) */
-:root {
-    --primary-color: #3B82F6;
-    --surface-color: #ffffff;
+/* Modo claro (tema por defecto) */
+html.light-theme {
+    --primary-color: #7490b1d2;
+    --surface-color: linear-gradient(to right, #ffffff, #7490b1d2);
     --text-color: #374151;
-    --border-color: #e5e7eb;
+    --border-color: #b5cce7d2;
     --background-color: #f8f9fa;
 }
 
-/* Variables para modo oscuro */
-body.dark-mode {
-    --primary-color: #60A5FA;
-    --surface-color: #1f2937;
-    --text-color: #f9fafb;
-    --border-color: #374151;
-    --background-color: #111827;
+/* Modo oscuro */
+html.dark-theme {
+    --primary-color: #506985d2;
+    --surface-color: linear-gradient(to right, #11161d, #141e29d2);
+    --text-color: #e8ebee;
+    --border-color: #141e29d2;
+    --surface-hover: #506985d2;
+    --background-color: #141e29d2;
 }
 
 /* Aplicar variables */

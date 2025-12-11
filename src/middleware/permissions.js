@@ -15,7 +15,7 @@ export const permissionGuard = (to, from, next) => {
   
   // TEMPORAL: Permitir acceso durante desarrollo
   if (process.env.NODE_ENV === 'development') {
-    console.warn(`[DEV] Permiso requerido: ${requiredPermission} - Acceso permitido temporalmente`);
+    // console.warn(`[DEV] Permiso requerido: ${requiredPermission} - Acceso permitido temporalmente`);
     return next();
   }
   

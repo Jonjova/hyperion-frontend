@@ -188,6 +188,7 @@ export default {
 
 .content-area {
   padding: 24px;
+  background: var(--background-color);
 }
 
 .page-header {

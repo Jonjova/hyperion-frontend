@@ -5,11 +5,13 @@ import users from '../modules/users/users';
 import permissions from '../modules/auth/permissions';  // Cambiado
 import attributes from '../modules/auth/attributes';    // Cambiado
 import sidebar from '../modules/home/sidebar';          // Cambiado
+import theme from './theme';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
+    theme,
     auth,
     users,
     permissions,

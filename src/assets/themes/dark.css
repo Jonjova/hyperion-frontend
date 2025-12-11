@@ -1,0 +1,21 @@
+:root {
+  --bg-color: #1e1e1e;
+  --bg-secondary: #2a2a2a;
+  --text-color: #ffffff;
+  --text-secondary: #cccccc;
+  --border-color: #3a3a3a;
+  --primary-color: #42a5f5;
+}
+
+body.dark-theme {
+  background: var(--bg-color);
+  color: var(--text-color);
+}
+
+.dark-theme .card,
+.dark-theme .sidebar,
+.dark-theme .header {
+  background: var(--bg-secondary);
+  color: var(--text-color);
+  border-color: var(--border-color);
+}

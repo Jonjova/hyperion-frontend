@@ -79,62 +79,56 @@ export default {
     .content-area {
         padding: 20px;
         min-height: calc(100vh - 64px - 60px);
+        background-color: var(--background-color);
         /* Ajustar según header y breadcrumb */
     }
 
-    /* Estilos responsivos unificados */
-    @media (min-width: 768px) {
+    /* ===== ESCRITORIO (769px o más) ===== */
+    @media (min-width: 769px) {
+        .sidebar-expanded .main-content {
+            margin-left: 200px;
+        }
+        
+        .sidebar-collapsed .main-content {
+            margin-left: 50px;
+        }
+        
         .content-area {
-            padding-right: 10px;
-            padding-left: 58px;
+            padding-left: 20px;
+            padding-right: 20px;
         }
     }
 
-    @media (max-width: 767px) {
+    /* ===== MÓVIL (768px o menos) ===== */
+    @media (max-width: 768px) {
         .content-area {
             padding-left: 76px;
         }
+        
+        /* El contenido queda fijo y hace scroll interno */
+        .main-content {
+            position: fixed;
+            top: 64px;              /* altura del header */
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 64px);
+            overflow-y: auto;
+            background-color: inherit;
+            z-index: 1;
+        }
+
+        /* El layout bajo header */
+        .layout-container {
+            position: relative;
+            height: calc(100vh - 64px);
+            overflow: hidden;
+        }
+
+        /* El sidebar NO debe empujar el contenido en móvil */
+        .sidebar-expanded .main-content,
+        .sidebar-collapsed .main-content {
+            margin-left: 0 !important;
+            width: 100% !important;
+        }
     }
-
-    /* ===== Ajuste dinámico del contenido según sidebar ===== */
-    .sidebar-expanded .main-content {
-        margin-left: 150px;
-        transition: margin-left 0.25s ease;
-    }
-
-/* ===== SOLO EN MÓVIL ===== */
-@media (max-width: 767px) {
-
-    /* El contenido queda fijo y hace scroll interno */
-    .main-content {
-        position: fixed;
-        top: 64px;              /* altura del header */
-        left: 0;
-        width: 100%;
-        height: calc(100vh - 64px);
-        overflow-y: auto;
-        background-color: inherit;
-        z-index: 1;
-    }
-
-    /* El layout bajo header */
-    .layout-container {
-        position: relative;
-        height: calc(100vh - 64px);
-        overflow: hidden;
-    }
-
-    /* El sidebar NO debe empujar el contenido en móvil */
-    .sidebar-expanded .main-content,
-    .sidebar-collapsed .main-content {
-        margin-left: 0 !important;
-    }
-
-    /* Ajuste de padding del contenido */
-    .content-area {
-        /* padding: 20px; */
-        padding-top: 10px;
-    }
-}
-
 </style>

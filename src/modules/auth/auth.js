@@ -21,7 +21,7 @@ const mutations = {
   
   [AUTH_TYPES.SET_TOKEN](state, token) {
     state.token = token;
-    state.isAuthenticated = !!token;
+    state.isAuthenticated = !token;
     if (token) {
       localStorage.setItem('token', token);
     } else {
