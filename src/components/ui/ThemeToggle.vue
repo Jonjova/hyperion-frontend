@@ -99,7 +99,7 @@ export default {
 }
 
 .theme-toggle-btn:hover {
-  background: var(--primary-light, rgba(37, 99, 235, 0.1));
+  background: var(--primary-light, rgba(179, 189, 207, 0.1));
   border-color: var(--primary-color);
 }
 

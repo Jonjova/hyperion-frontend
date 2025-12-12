@@ -6,7 +6,9 @@ html.light-theme {
     --surface-color: linear-gradient(to right, #ffffff, #7490b1d2);
     --text-color: #374151;
     --border-color: #b5cce7d2;
+    --surface-hover: #7490b1d2;
     --background-color: #f8f9fa;
+    --icon-color : #e8ebee;
 }
 
 /* Modo oscuro */
@@ -16,7 +18,8 @@ html.dark-theme {
     --text-color: #e8ebee;
     --border-color: #141e29d2;
     --surface-hover: #506985d2;
-    --background-color: #141e29d2;
+    --background-color: linear-gradient(to right, #11161d, #141e29d2);
+    --icon-color : #e8ebee;
 }
 
 /* Aplicar variables */
@@ -29,7 +32,7 @@ body {
     min-height: 100vh;
     margin: 0;
     padding: 0;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: 0.3s ease, color 0.3s ease;
 }
 
 /* Otros estilos... */

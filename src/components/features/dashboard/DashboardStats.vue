@@ -43,7 +43,7 @@ export default {
 }
 
 .stat-card {
-  background: white;
+  background: var(--primary-color);
   border-radius: 8px;
   padding: 1.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -82,7 +82,7 @@ export default {
 
 .stat-title {
   margin: 0.5rem 0 0 0;
-  color: #666;
+  color: var(--primary-color-dark);
   font-size: 0.9rem;
   font-weight: 500;
 }

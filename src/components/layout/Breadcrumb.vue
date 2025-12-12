@@ -47,7 +47,8 @@ export default {
 <style scoped>
 .breadcrumb {
   padding: 16px 0;
-  padding-left: 58px;
+  /* padding-left: 58px; */
+  /* background: var(--background-color); */
 }
 
 .breadcrumb-list {
@@ -75,17 +76,55 @@ export default {
 }
 
 .breadcrumb-text {
-  color: #666;
+  color: var(--text-color);
   font-weight: 500;
 }
 
 .breadcrumb-item--active .breadcrumb-text {
-  color: #333;
+  color: var(--primary-color-dark);
   font-weight: 600;
 }
 
 .breadcrumb-separator {
   margin: 0 8px;
   color: #999;
+}
+/* añade modo movil */
+@media (max-width: 768px) {
+  .breadcrumb {
+    padding-left: 51px;
+  }
+
+  .breadcrumb-item {
+    font-size: 0.875rem;
+  }
+
+  .breadcrumb-separator {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .breadcrumb {
+    padding-left: 51px;
+  }
+
+  .breadcrumb-item {
+    font-size: 0.875rem;
+    position: relative;
+  }
+
+  .breadcrumb-separator {
+    display: none;
+  }
+
+  /* Flecha chevron */
+  .breadcrumb-item:not(:last-child)::after {
+    content: "\e901";
+    font-family: 'primeicons';
+    margin: 0 4px;
+    color: var(--text-color);
+    font-size: 0.65em;
+  }
 }
 </style>

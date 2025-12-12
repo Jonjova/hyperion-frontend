@@ -66,7 +66,8 @@ export default {
 
     .layout-container {
         display: flex;
-        min-height: calc(100vh - 64px);
+        height: 100vh;
+        background: var(--background-color);
     }
 
     .main-content {
@@ -77,7 +78,7 @@ export default {
     }
 
     .content-area {
-        padding: 20px;
+        /* padding: 20px; */
         min-height: calc(100vh - 64px - 60px);
         background-color: var(--background-color);
         /* Ajustar según header y breadcrumb */
@@ -88,7 +89,6 @@ export default {
         .sidebar-expanded .main-content {
             margin-left: 200px;
         }
-        
         .sidebar-collapsed .main-content {
             margin-left: 50px;
         }
@@ -120,7 +120,7 @@ export default {
         /* El layout bajo header */
         .layout-container {
             position: relative;
-            height: calc(100vh - 64px);
+            height: 100vh;
             overflow: hidden;
         }
 

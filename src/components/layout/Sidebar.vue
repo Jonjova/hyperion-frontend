@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="sidebar"
+    class="sidebar aside-estilo"
     :class="{
       'sidebar--collapsed': collapsed && !isMobile,
       'sidebar--mobile-hidden': collapsed && isMobile
@@ -111,10 +111,14 @@ export default {
 /* ===========================
    SIDEBAR GENERAL
 =========================== */
+.aside-estilo {
+  overflow-y: auto;
+  overflow-x: hidden !important;
+}
 .sidebar {
   width: 200px;
   background: white;
-  border-right: 1px solid var(--border-color);
+  /* border-right: 1px solid var(--border-color); */
   display: flex;
   flex-direction: column;
   transition: width 0.2s ease;
@@ -138,6 +142,20 @@ export default {
   flex: 1;
   padding: 8px 0;
   background: var(--surface-color);
+}
+
+/* ===========================
+   SIDEBAR HEADER (FIX REAL)
+=========================== */
+.sidebar-header {
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  background: var(--surface-color);
+  border-bottom: 1px solid var(--border-color);
+  box-sizing: border-box;
 }
 
 .nav-list {
@@ -213,10 +231,11 @@ export default {
    TOGGLE
 =========================== */
 .toggle-btn {
-  width: 100%;
+  /* width: 100%; */
   background: var(--surface-color);
+  border-radius: 50%;
   border: 1px solid var(--border-color);
-  padding: 6px;
+  padding: 12px;
   /* border-radius: 4px; */
   cursor: pointer;
   color: var(--text-color);
@@ -226,6 +245,15 @@ export default {
 .toggle-btn:hover {
   background: var(--surface-color);
   color: var(--primary-color);
+}
+
+.toggle-btn .pi {
+  font-size: 1.2rem;
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+
+.sidebar--collapsed .toggle-btn .pi {
+  transform: rotate(180deg);
 }
 
 /* ===========================

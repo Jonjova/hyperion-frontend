@@ -96,8 +96,8 @@ export default {
 .table-container {
   overflow-x: auto;
   border-radius: 8px;
-  background: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  background: var(--primary-color);
+  box-shadow: var(--primary-color);
 }
 
 .table {
@@ -110,25 +110,25 @@ export default {
 .table td {
   padding: 12px 16px;
   text-align: left;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--primary-color);
   font-size: 0.875rem;
 }
 
 .table th {
-  background-color: #fafafa;
+  background-color: var(--border-color);
   font-weight: 500;
-  color: #666;
+  color: var(--text-color);
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .table-striped tbody tr:nth-child(even) {
-  background-color: #fafafa;
+  background-color: var(--surface-hover);
 }
 
 .table-hover tbody tr:hover {
-  background-color: #f8f9fa;
+  background-color: var(--surface-hover);
 }
 
 .actions-cell {
@@ -186,7 +186,7 @@ export default {
   .table td::before {
     content: attr(data-label);
     font-weight: 500;
-    color: #666;
+    color: #080808;
     text-align: left;
     margin-right: 16px;
     flex-shrink: 0;
@@ -208,6 +208,7 @@ export default {
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
+    color: var(--text-color);
   }
   
   .table td::before {

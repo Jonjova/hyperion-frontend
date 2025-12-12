@@ -87,7 +87,7 @@ export default {
   background: var(--surface-color);
   color: var(--text-color);
   border-bottom: 1px solid var(--border-color);
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: 0.3s ease, color 0.3s ease;
    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;

@@ -162,10 +162,10 @@
 
     .recent-activity,
     .quick-actions {
-        background: white;
+        background: var(--primary-color);
         padding: 1.5rem;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 4px #506985d2;
         min-width: 0;
     }
 
@@ -173,7 +173,7 @@
     .quick-actions h2 {
         margin-top: 0;
         margin-bottom: 1rem;
-        color: #333;
+        color: var(--primary-color-dark);
         font-size: 1.25rem;
     }
 
@@ -188,13 +188,13 @@
         align-items: flex-start;
         gap: 1rem;
         padding: 1rem;
-        border: 1px solid #f0f0f0;
+        border: 1px solid #43474dd2;
         border-radius: 6px;
         transition: all 0.3s ease;
     }
 
     .activity-item:hover {
-        background-color: #f9f9f9;
+        background-color: var(--surface-hover);
         transform: translateY(-1px);
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
@@ -202,9 +202,9 @@
     /* Iconos minimalistas para actividades */
     .activity-icon {
         font-size: 1.1rem;
-        color: linear-gradient(to right, #000000da, #434343);
+        color: var(--icon-color);
         /* Color único azul suave */
-        background: #e3f2fd;
+        background: #1d5b86;
         padding: 8px;
         border-radius: 8px;
         flex-shrink: 0;
@@ -216,9 +216,9 @@
         transition: all 0.3s ease;
     }
 
-    .activity-item:hover .activity-icon {
+    .activity-item:hover .activity-icon  {
         background: linear-gradient(to right, #000000da, #434343);
-        color: white;
+        color: var(--icon-color);
     }
 
     .activity-content {
@@ -231,12 +231,12 @@
         font-weight: 500;
         word-wrap: break-word;
         overflow-wrap: break-word;
-        color: #333;
+        color: var(--primary-color-dark);
     }
 
     .activity-time {
         font-size: 0.875rem;
-        color: #666;
+        color: var(--text-color);
     }
 
     .actions-grid {
