@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import auth from '../modules/auth/auth';
+import auth from '../modules/auth/api/auth';
 import users from '../modules/users/users';
-import permissions from '../modules/auth/permissions';  // Cambiado
-import attributes from '../modules/auth/attributes';    // Cambiado
+import permissions from '../modules/auth/api/permissions';  // Cambiado
+import attributes from '../modules/auth/api/attributes';    // Cambiado
 import sidebar from '../modules/home/sidebar';          // Cambiado
 import theme from './theme';
 

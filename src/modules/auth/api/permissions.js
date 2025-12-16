@@ -1,4 +1,4 @@
-import { PERMISSION_TYPES } from '../../store/types';
+import { PERMISSION_TYPES } from '../../../store/types';
 import { usersApi } from '@/api/users';
 
 const state = {
@@ -54,7 +54,7 @@ const actions = {
     commit(PERMISSION_TYPES.SET_USER_DIRECT_PERMISSIONS, mockPermissions.userDirectPermissions);
     commit(PERMISSION_TYPES.SET_INHERITED_PERMISSIONS, mockPermissions.inheritedPermissions);
 
-    console.log('Permisos cargados:', mockPermissions.permissions);
+    // console.log('Permisos cargados:', mockPermissions.permissions);
   },
 
   async assignUserRoles({ commit }, { userId, roles }) {

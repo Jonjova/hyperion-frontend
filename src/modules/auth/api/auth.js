@@ -44,19 +44,17 @@ const mutations = {
 const actions = {
   async login({ commit, dispatch }, credentials) {
     try {
-      console.log('Iniciando login con:', credentials);
-      
       const response = await authApi.login(credentials);
       const { token, user } = response.data;
       
-      console.log('Login exitoso:', { token, user });
+      // console.log('Login exitoso:', { token, user });
       
       commit(AUTH_TYPES.SET_TOKEN, token);
       commit(AUTH_TYPES.SET_USER, user);
       
       // Debug: verificar localStorage
-      console.log('Token en localStorage:', localStorage.getItem('token'));
-      console.log('User en localStorage:', localStorage.getItem('user'));
+      // console.log('Token en localStorage:', localStorage.getItem('token'));
+      // console.log('User en localStorage:', localStorage.getItem('user'));
       
       // Cargar permisos
       if (user && user.id) {
@@ -73,8 +71,7 @@ const actions = {
   
   // NUEVA: Inicializar autenticación al cargar la app
   async initialize({ commit, state, dispatch }) {
-    console.log('Inicializando autenticación...');
-    
+  
     // Si no hay token, no hacer nada
     if (!state.token) {
       console.log('No hay token, usuario no autenticado');
@@ -84,7 +81,7 @@ const actions = {
     try {
       // Si ya tenemos usuario en localStorage, usarlo
       if (state.user) {
-        console.log('Usuario cargado desde localStorage:', state.user);
+        // console.log('Usuario cargado desde localStorage:', state.user);
         // Cargar permisos para este usuario
         await dispatch('permissions/loadUserPermissions', state.user.id, { root: true });
         return true;
