@@ -20,34 +20,32 @@ VueRouter.prototype.replace = function replace(location) {
     if (err.name !== 'NavigationDuplicated') throw err;
   });
 };
+
 const routes = [
   {
-    path: '/login',
-    name: 'Login',
-    component: () => import('@/modules/auth/views/Login.vue'),
-    meta: { requiresAuth: false }
+    path: "/login",
+    name: "Login",
+    component: () => import("@/modules/auth/views/Login.vue"),
+    meta: { requiresAuth: false },
   },
   {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: () => import('@/views/dashboard/Dashboard.vue'),
-    meta: { 
+    path: "/dashboard",
+    name: "Dashboard",
+    component: () => import("@/views/dashboard/Dashboard.vue"),
+    meta: {
       requiresAuth: true,
-      permission: 'dashboard.access',
-       breadcrumb: [
-            { text: 'Dashboard', to: '/dashboard' }
-        ]
-    }
+      permission: "dashboard.access",
+    },
   },
   ...adminRoutes,
   {
-    path: '/',
-    redirect: '/dashboard'
+    path: "/",
+    redirect: "/login",
   },
   {
-    path: '*',
-    redirect: '/dashboard'
-  }
+    path: "*",
+    redirect: "/login",
+  },
 ];
 
 const router = new VueRouter({

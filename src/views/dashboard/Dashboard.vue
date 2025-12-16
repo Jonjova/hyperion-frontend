@@ -151,7 +151,9 @@
 </script>
 
 <style scoped>
-
+    .dashboard {
+        padding: 8px;
+    }
     /* SOLUCIÓN RESPONSIVA */
     .dashboard-grid {
         display: grid;

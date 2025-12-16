@@ -21,12 +21,12 @@ const mutations = {
   
   [AUTH_TYPES.SET_TOKEN](state, token) {
     state.token = token;
-    state.isAuthenticated = !token;
+    state.isAuthenticated = !!token; // ✅ CORRECTO
     if (token) {
       localStorage.setItem('token', token);
     } else {
       localStorage.removeItem('token');
-      localStorage.removeItem('user'); // Limpiar usuario si no hay token
+      localStorage.removeItem('user');
     }
   },
   

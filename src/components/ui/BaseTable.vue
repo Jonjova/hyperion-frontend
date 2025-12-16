@@ -138,8 +138,8 @@ export default {
 .empty-state {
   padding: 40px;
   text-align: center;
-  color: #666;
-  background-color: #fafafa;
+  color: var(--text-color);
+  background-color: var(--surface-hover);
   border-radius: 8px;
   margin-top: 16px;
 }

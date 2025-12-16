@@ -87,84 +87,40 @@ export default {
     },
     
     async handleLogin() {
-      if (this.isRedirecting) return;
-      
       if (!this.validateForm()) return;
-      
+
       this.loading = true;
       this.error = '';
-      this.isRedirecting = true;
-      
+
       try {
-        // Hacer login
-        const response = await this.$store.dispatch('auth/login', this.form);
-        
-        // Redirigir usando replace (no push)
-        await this.$router.replace('/dashboard');
-        
-      } catch (error) {
-        console.error('Error de inicio de sesión:', error);
-        
-        if (error.response) {
-          if (error.response.status === 401) {
-            this.error = 'Credenciales incorrectas';
-          } else if (error.response.status === 422) {
-            this.error = 'Datos de formulario inválidos';
-          } else if (error.response.status === 500) {
-            this.error = 'Error del servidor. Intente más tarde.';
-          } else {
-            this.error = error.response.data?.error || 
-                       error.response.data?.message || 
-                       'Error al iniciar sesión';
-          }
-        } else if (error.request) {
-          this.error = 'No se pudo conectar con el servidor.';
-          
-          // Usar login mock de manera controlada
-          await this.useMockAuth();
-          
-        } else {
-          this.error = 'Error de configuración: ' + error.message;
+        await this.$store.dispatch('auth/login', this.form);
+
+        // ⬅️ Esperar a que Vue actualice el state
+        await this.$nextTick();
+
+        // ⬅️ Redirigir SOLO si ya está autenticado
+        if (this.$store.state.auth.isAuthenticated) {
+          this.$router.replace({ name: 'Dashboard' });
         }
+
+      } catch (error) {
+        this.error = 'Error al iniciar sesión';
       } finally {
         this.loading = false;
-        this.isRedirecting = false;
       }
     },
     
     async useMockAuth() {
       try {
-        const mockCredentials = {
+        this.$store.commit('auth/SET_AUTH', true);
+        this.$store.commit('auth/SET_USER', {
+          id: 1,
+          name: 'Usuario Demo',
           email: this.form.email || 'demo@example.com',
-          password: this.form.password || 'demo123'
-        };
-        
-        // Simular la misma estructura que el login real
-        const mockResponse = {
-          data: {
-            token: 'mock-jwt-token-' + Date.now(),
-            user: {
-              id: 1,
-              name: 'Usuario Demo',
-              email: mockCredentials.email,
-              roles: ['admin']
-            }
-          }
-        };
-        
-        // Usar la misma lógica del store
-        await this.$store.dispatch('auth/login', {
-          email: mockCredentials.email,
-          password: mockCredentials.password
+          roles: ['admin']
         });
-        
-        // Redirigir
-        await this.$router.replace('/dashboard');
-        
       } catch (error) {
-        console.error('Error en mock auth:', error);
         this.error = 'No se pudo iniciar sesión en modo desarrollo.';
-        this.isRedirecting = false;
       }
     }
   },

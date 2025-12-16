@@ -66,7 +66,7 @@ export default {
 
     .layout-container {
         display: flex;
-        height: 100vh;
+        min-height: calc(100vh - 64px);
         background: var(--background-color);
     }
 
@@ -102,7 +102,7 @@ export default {
     /* ===== MÓVIL (768px o menos) ===== */
     @media (max-width: 768px) {
         .content-area {
-            padding-left: 76px;
+            padding-left: 59px;
         }
         
         /* El contenido queda fijo y hace scroll interno */

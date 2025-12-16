@@ -1,16 +1,16 @@
 import store from '@/store';
 
 export const authGuard = (to, from, next) => {
-  // Si la ruta no requiere auth, continuar
-  if (!to.meta.requiresAuth) {
-    return next();
+
+  // Login y ya autenticado → dashboard
+  if (to.name === 'Login' && store.state.auth.isAuthenticated) {
+    return next({ name: 'Dashboard' });
   }
-  
-  // Si está autenticado, continuar
-  if (store.state.auth.isAuthenticated) {
-    return next();
+
+  // Ruta protegida y NO autenticado → login
+  if (to.meta.requiresAuth && !store.state.auth.isAuthenticated) {
+    return next({ name: 'Login' });
   }
-  
-  // Si no está autenticado y va a una ruta protegida, redirigir a login
-  next({ name: 'Login' });
+
+  return next();
 };
