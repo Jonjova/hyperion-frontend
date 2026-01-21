@@ -1,15 +1,20 @@
 import store from '@/store';
 
 export const permissionGuard = (to, from, next) => {
-  const requiredPermission = to.meta?.permission;
-
-  // No requiere permiso
-  if (!requiredPermission) {
+  // 🔴 IMPORTANTE: si no requiere auth, no hacer nada
+  if (!to.meta.requiresAuth) {
     return next();
   }
 
-  // AuthGuard ya se encarga de login
+  // 🔴 Si no está autenticado, authGuard ya se encarga
   if (!store.state.auth.isAuthenticated) {
+    return next();
+  }
+
+  const requiredPermission = to.meta.permission;
+// console.log('Required Permission:', requiredPermission);
+  // No requiere permiso
+  if (!requiredPermission) {
     return next();
   }
 
@@ -25,5 +30,5 @@ export const permissionGuard = (to, from, next) => {
     return next({ name: 'Dashboard' });
   }
 
-  return next();
+  next();
 };

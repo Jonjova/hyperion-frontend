@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="$can('user.view')">
         <div class="page-header">
            
             <BaseButton v-if="$can('user.create')" variant="primary" @click="showCreateModal = true">

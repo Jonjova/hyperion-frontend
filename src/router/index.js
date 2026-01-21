@@ -39,12 +39,12 @@ const routes = [
   },
   ...adminRoutes,
   {
-    path: "/",
+    path: "/dashboard",
     redirect: "/login",
   },
   {
     path: "*",
-    redirect: "/login",
+    redirect: "/dashboard",
   },
 ];
 

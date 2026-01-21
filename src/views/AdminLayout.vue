@@ -60,7 +60,7 @@ export default {
 
 <style scoped>
     .admin-layout {
-        min-height: 100vh;
+        /* min-height: 100vh; */
         background-color: var(--bg-color, #f8f9fa);
     }
 
@@ -102,7 +102,8 @@ export default {
     /* ===== MÓVIL (768px o menos) ===== */
     @media (max-width: 768px) {
         .content-area {
-            padding-left: 59px;
+            padding-left: 64px;
+            padding-right: 8px;
         }
         
         /* El contenido queda fijo y hace scroll interno */

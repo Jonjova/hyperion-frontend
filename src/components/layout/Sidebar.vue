@@ -268,14 +268,15 @@ export default {
     left: 0;
     width: 60px !important;
     height: calc(100vh - 65px) !important;
-    background: white;
+    /* background: var(--primary-color); */
     z-index: 2000;
     transition: width 0.25s ease;
+    border: solid 1px var(--border-color);
   }
 
   /* Cuando está colapsado en móvil */
   .sidebar--collapsed {
-    width: 60px !important;
+    width: 57px !important;
   }
 
   /* Cuando NO está colapsado (expandido) en móvil */
@@ -291,7 +292,7 @@ export default {
     top: 65px;
     width: 100%;
     height: calc(100vh - 65px);
-    background: rgba(0,0,0,0.45);
+    background: rgba(15, 15, 15, 0.45);
     z-index: 1500;
     transition: opacity 0.25s ease;
   }
